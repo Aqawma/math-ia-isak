@@ -1,0 +1,93 @@
+\section{Evaluation \& Conclusion}\label{sec:evaluation-conclusion}
+\subsection{Limitations}
+\subsubsection{Validity Radius of $\xi$}
+The radius of validity proposed in Section \ref{sec:results-discussion} was measured using just $\eta$. 
+
+	\begin{table}[H]
+        \centering
+        \begin{tabular}{cccc}
+            \toprule
+            \textbf{$\eta_0$} & $\eta$ & $\xi$ & ratio \\
+            \midrule
+            $10^{-3}$ & 0.436\% & 0.538\% & 1.23   \\
+            $10^{-2}$ & 4.545\% & 5.529\% & 1.22 \\
+            $2\times10^{-2}$ & 9.513\% & 11.423\% & 1.20 \\
+            \bottomrule
+        \end{tabular}
+        \caption{Maximum deviation over one period, \% of $\eta_0$ where $a=0.85$}
+        \label{tab:deviation-over-period}
+    \end{table}
+
+The deviation in $\xi$ is approximately 1.2 times larger. In terms of the collected data, this means that when we apply the radius criterion to the variable that yields worse results, the $10\%$ accuracy radius decreases from 0.021 to 0.018 ($16\%$). The radius reported above is thus a best-case scenario.
+
+\subsubsection{One Value of $\epsilon\delta$ was Tested}
+All results use a single set of parameters, and the radius of validity changes as the parameters change. When $\epsilon\delta=0.2$, it contracts from 0.021 to 0.0045. While this is the case, when $t =\epsilon\tau$ is substituted into the expression, it gives:
+\[
+\frac{dT}{d\tau}=T-\frac{T^3}{3}-L+\mu.
+\]
+and
+\[
+\frac{dL}{d\tau} = \epsilon\delta(T - a).
+\]
+This means the system parameters enter only as their product. For any value where $\epsilon\delta=0.4$, the results hold.
+
+	\begin{table}[H]
+        \centering
+        \begin{tabular}{cccccc}
+            \toprule
+            \textbf{$\epsilon\delta$} & 0.1 & 0.2 & 0.4 & 0.7 & 1.0 \\
+            \midrule
+            radius & 0.00036 & 0.0045 & 0.021 & 0.055 & 0.093 \\
+            \bottomrule
+        \end{tabular}
+        \caption{10\% radius for five values, where $a=0.85$}
+        \label{tab:varying-values-of-epsilion-delta}
+    \end{table}
+    
+    \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            width=0.75\textwidth, height=6.5cm,
+            ymode=log,
+            xlabel={$\epsilon\delta$}, ylabel={10\% validity radius},
+            xmin=0, xmax=1.08, ymin=2e-4, ymax=0.2,
+            axis lines=left, tick align=outside,
+            legend pos=south east, legend cell align=left,
+            legend style={font=\footnotesize, draw=none},
+        ]
+            \addplot[only marks, mark=o, mark size=4pt, RoyalBlue, thick,
+                     restrict expr to domain={\thisrow{eps}}{0.49:0.51}]
+                table[x=eps_delta, y=radius10, col sep=comma] {graph_data/figG_epsdelta.csv};
+            \addlegendentry{$\epsilon=0.5$}
+            \addplot[only marks, mark=square, mark size=2.6pt, ForestGreen, thick,
+                     restrict expr to domain={\thisrow{eps}}{0.99:1.01}]
+                table[x=eps_delta, y=radius10, col sep=comma] {graph_data/figG_epsdelta.csv};
+            \addlegendentry{$\epsilon=1$}
+            \addplot[only marks, mark=x, mark size=2.4pt, BrickRed, thick,
+                     restrict expr to domain={\thisrow{eps}}{1.99:2.01}]
+                table[x=eps_delta, y=radius10, col sep=comma] {graph_data/figG_epsdelta.csv};
+            \addlegendentry{$\epsilon=2$}
+        \end{axis}
+    \end{tikzpicture}
+    \caption{10\% Validity radius against $\epsilon\delta$ for three values of $\epsilon$, $a=0.85$. The three sets of markers coincide because the parameters enter the model only through their product.}
+    \label{fig:epsdelta}
+\end{figure}
+
+    
+  	\subsubsection{Approximation Chain}
+  	Numerical error does not affect the final results. When the step size is halved from $h=0.001$, the results deviate by less than 0.002\%. The linearization is the third in a chain of successive linearizations after linearizing the outgoing radiation, and $\tanh$ is truncated at the cubic term. The tests measure only the final linearization, so the results reflect fidelity to the model rather than to climate science. 
+  	
+\subsection{Extensions}
+\subsubsection{Putting Units Back in the Answer}
+The rescaling done in \ref{subsubsec:rescaling} is invertible: $u=sT$ with $s=\sqrt{\frac{-c_1}{3c_3}}$, and $t=\tau_0\tau$. Evaluating $c_1$, $c_3$, and $\tau_0$ with calibrated values like those found in \cite{dortmansEnergyBalance2019} for albedo and $\omega$, would convert the radius, $\eta_0\approx0.021$, into Kelvin and the period, $P=10.18$, into years. This would allow direct comparison of the 100,000-year cycle presented in \ref{sec:introduction} with the model.
+
+\subsubsection{Sweeping $\epsilon\delta$}
+Because the radius depends only on $\epsilon\delta$, one sweep over that product covers the entire parameter space. The formulae predict the direction of growth: when $\epsilon\delta$ is larger, growth per period is smaller, so the radius of validity is larger. Whether the radius tracks with $e^{\alpha P}$ quantitatively is untested, though.
+
+\subsection{Conclusion}
+For this model, when $a=0.85$, the linearization stays within 10\% of the true trajectory for starting displacements up to $\eta_0\approx 0.021$, and 5\% up to 0.011. In this case specifically, accuracy is defined as the maximum deviation over one predicted period. This answer depends on the criterion, though, as requiring accuracy over three periods shrinks the radius of validity about 300 times. Additionally, the period and growth-rate formulae were both accurate within 0.3\% on both sides of the bifurcation, although on the stable side, they were about 4000 times more accurate. The error-scaling exponent predicted from the discarded terms before any quantitative work was confirmed to be 1.005. The predicted prefactor was not confirmed; it was 42\% too low. 
+
+Finally, the introduction questioned whether internal feedback could lead to sustained oscillation. The linearization describes the very beginning of this process, but it stops tracking $\eta_0$ beyond $\eta_0\approx 0.25$, because the limit-cycle size is set by the nonlinear terms, which were discarded.
+
+

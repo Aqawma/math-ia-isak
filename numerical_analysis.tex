@@ -1,0 +1,192 @@
+\section{Numerical Analysis}\label{sec:numerical-analysis}
+\subsection{Methodology}\label{subsec:methodology}
+
+    \subsubsection{Euler \& RK4}\label{subsubsec:euler-rk4}
+
+    Two methods are commonly used for approximating numerical solutions to systems of coupled differential equations. These are Euler's method and RK4 (4th-Order Runge--Kutta). Both approximate the system's behaviour effectively, but they differ in one key way. Euler's method uses the slope at the start of the step for the entire step. In contrast, RK4 samples the slope four times across the step, then takes a weighted average of the four. The primary benefit of Euler's method is that it is less computationally intensive. Additionally, it is first order, so halving the step size halves the error. RK4 is much more computationally intensive, but it is fourth order, so halving the step size decreases the error by a factor of $2^4=16$.
+
+    \subsubsection{Algebraic Working of Euler's Method}\label{subsubsec:algebraic-working}
+
+    Even though the comparison data will be produced using RK4, both methods use a similar technique to generate values. An individual step for Euler's method is shown below for the values $a=0.85$, $\eta_0=0.01$, $h=0.01$, originating from $\left(T_0,L_0\right)=(0.86,0.64529167)$:
+    \[
+        f\left(T_0,L_0\right)=\frac{1}{\epsilon}\left(T_0-\frac{T_0^3}{3}-L_0+\mu\right)
+    \]
+    \[
+        f\left(T_0,L_0\right)=0.86-\frac{0.86^3}{3}-0.64529167
+    \]
+    \[
+        f\left(T_0,L_0\right)=0.00268967.
+    \]
+    Now that we have a value for $f\left(T_0,L_0\right)$, we will solve for $g\left(T_0,L_0\right)$:
+    \[
+        g\left(T_0,L_0\right)=\delta\left(T_0-a\right)
+    \]
+    \[
+        g\left(T_0,L_0\right)=0.4\left(0.86-0.85\right)
+    \]
+    \[
+        g\left(T_0,L_0\right)=0.00400000.
+    \]
+    Finally, using these two values, we can solve for $\left(T_1,L_1\right)$:
+    \[
+        T_1=T_0+hf
+    \]
+    \[
+        T_1=0.86+0.01\cdot0.00268967
+    \]
+    \[
+        T_1=0.86002690.
+    \]
+    And for $L_1$:
+    \[
+        L_1=L_0+hg
+    \]
+    \[
+        L_1=0.64529167+0.01\cdot0.00400000
+    \]
+    \[
+        L_1=0.64533167.
+    \]
+    Thus,
+    \[
+        \left(T_1,L_1\right)=(0.86002690,0.64533167).
+    \]
+    As shown here, calculating a large series of values by hand is repetitive and tedious, so we used Python to compute them.
+
+    \subsubsection{Convergence Check}\label{subsubsec:convergence-check}
+
+    To ensure the values we compare the linearized model to are accurate, we need to ensure the step size $h$ has converged. If changing $h$ causes a significant change in $T$, then the result depends on the RK4 step size. If the change is insignificant, the values have converged, and we can obtain accurate results using those values.
+
+    \begin{table}[H]
+        \centering
+        \begin{tabular}{lll}
+            \toprule
+            \textbf{$h$} & \textbf{$T(25)$} & \textbf{change from next finer $h$} \\
+            \midrule
+            0.05    & 0.580329 & $3.7\times10^{-8}$ \\
+            0.025   & 0.580329 & $2.3\times10^{-9}$ \\
+            0.0125  & 0.580329 & $1.5\times10^{-10}$ \\
+            0.00625 & 0.580329 & --- \\
+            \bottomrule
+        \end{tabular}
+        \caption{Convergence of $T(25)$ as the Step Size $h$ is Halved}
+        \label{tab:convergence}
+    \end{table}
+
+    As shown in the table, halving $h$ decreases the change by about a factor of 16. Because the data is generated rather than observed, the primary error source is numerical. Setting the step size to four orders of magnitude lower than the values being measured prevents errors from propagating into the final results; we used $h=0.001$.
+
+    \subsubsection{Defining Measurements}\label{subsubsec:defining-measurements}
+
+    In Section~\ref{sec:auxiliary-equation}, we predicted a growth rate $\alpha$ and a period $\beta$. The numerical output is a list of $(t,T)$ values. We must convert these values into period and growth rate before making any comparisons.
+
+    \paragraph{Period}
+
+    The period is the mean time between successive upward zero crossings of $\eta(t)$. We will find the exact crossing time using linear interpolation, since it will fall between two points. Averaging the period multiple times reduces potential noise. To generate the data, the period was averaged three times.
+
+    \paragraph{Growth Rate}
+
+    The growth rate will be measured from the ratio of successive peak heights. For two peaks, $\eta_n,\eta_{n+1}$, that are one period, $P$ apart, the growth rate predictor, $e^{\alpha t}$, gives $\frac{\eta_{n+1}}{\eta_n}=e^{\alpha P}$. Thus rearranging this relationship to solve for $\alpha_{\text{measured}}$ gives:
+    \[
+        \alpha_{\text{measured}}=\frac{1}{P}\ln\left(\frac{\eta_{n+1}}{\eta_n}\right).
+    \]
+    Unlike the period, repeatedly averaging successive growth-rate measurements makes the estimate worse, because every peak after the first drifts further from equilibrium, and when $a<1$, that drift is biased because the system is decaying. To ensure accuracy, we count only the first peak and calculate the error against it.
+
+    \subsubsection{Sweeping the Control Parameter}\label{subsubsec:sweeping-control-parameter}
+
+    With everything accounted for, we can finally generate experimental data for the range of the control parameter, $a$, across the bifurcation. For this test, we will keep $\eta_0=10^{-4}$ throughout. We choose this very small value intentionally, as it maintains the dominance of the linear term; we are testing the approximation formulae, not the range.
+
+    \begin{table}[H]
+        \centering
+        \footnotesize
+       	\input{sweep}
+        \caption{Predicted vs. Measured Period and Growth Rate Across the Control Parameter $a$}
+        \label{tab:sweep}
+    \end{table}
+
+    We can make some interesting observations from this data. First, the percent error stays under 0.3\% across the entire range of $a$, with the highest period error at $a=0.80$ ($0.259$\%). The error then falls to below 0.001\% when $a\geq0.95$. The largest growth-rate error also occurs at $a=0.80$ and is 0.013\%. Additionally, the sign of $\alpha$ flips between $a=0.95$ and $a=1.05$, confirming a bifurcation at that point and further supporting the model's accuracy.
+
+    \subsubsection{Varying the Starting Displacement}\label{subsubsec:varying-starting-displacement}
+
+    In Section~\ref{sec:linearizing}, we assumed we could discard the nonlinear terms for small $\eta$. Here we will determine how small $\eta$ must be, and thus how far the linearized approximation remains a valid predictor of the system's behaviour. To do this, we will hold all terms fixed except for how far from equilibrium we start. The conditions are $a=0.85$, $\alpha=0.138750$, $\beta=0.617048$. To evaluate this, though, we must solve for $C_1$ and $C_2$. Setting $\eta(0)=\eta_0$ against $\eta(0)=C_1$ gives $C_1=\eta_0$. From the original coupled equation $\epsilon\dot\eta=(1-a^2)\eta-\xi$ evaluated at $t=0$ with $\xi(0)=0$: $\dot\eta(0)=\frac{\left(1-a^2\right)\eta_0}{\epsilon}$. Setting that equal to the general formula's derivative at $t=0$, $\dot\eta(0)=\alpha C_1+\beta C_2$ and solving for $C_2$:
+    \[
+        C_2=\frac{\left(1-a^2\right)\eta_0/\epsilon-\alpha\eta_0}{\beta}.
+    \]
+    Thus, $C_2=0.002249$.
+
+    \begin{table}[H]
+        \centering
+        \begin{tabular}{cc}
+            \toprule
+            \textbf{$\eta_0$} & \textbf{max deviation as \% of $\eta_0$} \\
+            \midrule
+            0.001 & 0.436469   \\
+            0.005 & 2.221792   \\
+            0.010 & 4.544833   \\
+            0.050 & 27.397509  \\
+            0.100 & 70.897122  \\
+            0.250 & 425.129486 \\
+            0.500 & 254.998492 \\
+            1.000 & 283.539717 \\
+            2.000 & 349.720745 \\
+            \bottomrule
+        \end{tabular}
+        \caption{Maximum Deviation of the Linearized Model as a Percentage of the Starting Displacement $\eta_0$}
+        \label{tab:starting-displacement}
+    \end{table}
+    
+    \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            width=0.85\textwidth, height=7cm,
+            xlabel={time $t$ (one predicted period, $P=10.18$)},
+            ylabel={$\eta(t)/\eta_0$},
+            xmin=0, xmax=10.1827, ymin=-4.5, ymax=4.5,
+            axis lines=left, tick align=outside,
+            legend pos=north west, legend cell align=left,
+            legend style={font=\footnotesize, draw=none, fill=white, fill opacity=0.85, text opacity=1},
+        ]
+            \addplot[gray, thin, forget plot] coordinates {(0,0) (10.1827,0)};
+            \addplot[RoyalBlue, thick] table[x=t, y=eta_0p01, col sep=comma] {graph_data/figA_trajectories.csv};
+            \addlegendentry{full model, $\eta_0=0.01$}
+            \addplot[ForestGreen, thick] table[x=t, y=eta_0p1, col sep=comma] {graph_data/figA_trajectories.csv};
+            \addlegendentry{full model, $\eta_0=0.1$}
+            \addplot[BrickRed, thick] table[x=t, y=eta_0p5, col sep=comma] {graph_data/figA_trajectories.csv};
+            \addlegendentry{full model, $\eta_0=0.5$}
+            \addplot[black, thick, dashed] table[x=t, y=eta_lin, col sep=comma] {graph_data/figA_trajectories.csv};
+            \addlegendentry{linear prediction (same for every $\eta_0$)}
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Full model against the linear prediction over one period, $a=0.85$. Dividing by $\eta_0$ makes the linear solution identical for every starting displacement, so any separation from the dashed curve is caused by the discarded nonlinear terms}
+    \label{fig:linear-vs-full}
+\end{figure}
+
+
+    The approximation degrades as $\eta_0$ moves. Interpolating within these results shows that the deviation reaches 5\% of $\eta_0$ at $\eta_0=0.011$, and 10\% at $\eta_0=0.021$. We can interpret this as a `small' value of $\eta_0\lesssim 0.01$. Another notable feature is that beyond $\eta_0\approx0.25$, the percentage error stops rising continuously and instead fluctuates. This is caused by the large-amplitude limit cycle, whose size is set by the model's global structure and does not scale with $\eta_0$.
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            width=0.85\textwidth, height=7cm,
+            xmode=log, ymode=log,
+            xlabel={starting displacement $\eta_0$},
+            ylabel={maximum deviation over one period (\% of $\eta_0$)},
+            xmin=8e-4, xmax=2.5, ymin=0.25, ymax=900,
+            axis lines=left, tick align=outside,
+            legend pos=north west, legend cell align=left,
+            legend style={font=\footnotesize, draw=none},
+        ]
+            \addplot[gray, densely dotted, forget plot] coordinates {(8e-4,5) (2.5,5)};
+            \addplot[gray, densely dotted, forget plot] coordinates {(8e-4,10) (2.5,10)};
+            \addplot[gray, densely dotted, forget plot] coordinates {(0.01095,0.25) (0.01095,5)};
+            \addplot[gray, densely dotted, forget plot] coordinates {(0.02093,0.25) (0.02093,10)};
+            \addplot[BrickRed, thick, mark=*, mark size=1.1pt] table[x=eta0, y=max_dev_pct, col sep=comma] {graph_data/figC_deviation.csv};
+            \addlegendentry{full model vs linear prediction}
+            \node[font=\footnotesize, anchor=south east, gray!70!black] at (axis cs:0.0105,5) {5\%: $\eta_0=0.011$};
+            \node[font=\footnotesize, anchor=south east, gray!70!black] at (axis cs:0.020,10.5) {10\%: $\eta_0=0.021$};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Maximum deviation over one period against starting displacement, $a=0.85$. The deviation crosses 5\% at $\eta_0=0.011$ and 10\% at $\eta_0=0.021$, peaks near $\eta_0\approx0.3$, and beyond that no longer follows the linear trend, because the size of the limit cycle does not depend on $\eta_0$.}
+    \label{fig:deviation-sweep}
+\end{figure}

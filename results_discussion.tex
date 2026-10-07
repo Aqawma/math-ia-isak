@@ -1,0 +1,132 @@
+\section{Results \& Discussion}\label{sec:results-discussion}
+\subsection{Asymmetry Around the Bifurcation}\label{subsec:asymmetry}
+
+    The period formula is not equally accurate on both sides of the bifurcation.
+
+    \begin{table}[H]
+        \centering
+        \begin{tabular}{lcc}
+            \toprule
+            & \textbf{mean period error} & \textbf{worst case} \\
+            \midrule
+            unstable, $a<1$ & $7.35\times10^{-2}$\% & $2.59\times10^{-1}$\% at $a=0.80$ \\
+            stable, $a>1$   & $5.72\times10^{-5}$\% & $6.90\times10^{-5}$\% at $a=1.15$ \\
+            \bottomrule
+        \end{tabular}
+        \caption{Mean and Worst-Case Period Error on Each Side of the Bifurcation}
+        \label{tab:asymmetry}
+    \end{table}
+
+    As shown in the table above, the error is significantly higher when $a<1$ than when $a>1$. In fact, the error differs by a factor of 4024 between $a=0.80$ and $a=1.20$, which are equally spaced from the bifurcation ($2.59\times10^{-1}$ vs. $6.43\times 10^{-5}$). This is a huge bias, and the system's behaviour can explain it. The sign of $\alpha$ determines whether the system's equilibrium is stable or unstable. When $\alpha<0$, the system's trajectory decays toward equilibrium. For the linearized model, this means that as $t$ increases, the trajectory approaches the linearization center. This occurs when $a>1$. On the other hand, when $\alpha>0$, the trajectory moves further from equilibrium because it is unstable. Therefore, as $t$ progresses, the linearized model attempts to describe behaviour that grows farther and farther from it. On the stable side of $a$ ($a>1$), the model is self-correcting; on the other, it is self-erroring. In terms of the linearization, its accuracy has no meaning without knowing which side of the bifurcation it applies to. The model is quantitatively reliable on one side of $a$ and only slightly reliable on the other.
+    
+    \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            width=0.8\textwidth, height=7cm,
+            ymode=log,
+            xlabel={control parameter $a$},
+            ylabel={period error (\%)},
+            xmin=0.78, xmax=1.22, ymin=1e-7, ymax=1,
+            xtick={0.80,0.85,...,1.20},
+            xticklabel style={/pgf/number format/fixed, /pgf/number format/precision=2, /pgf/number format/fixed zerofill},
+            axis lines=left, tick align=outside,
+            legend pos=north east, legend cell align=left,
+            legend style={font=\footnotesize, draw=none},
+        ]
+            \addplot[gray, dashed, forget plot] coordinates {(1,1e-7) (1,1)};
+            \node[font=\footnotesize, gray!70!black, anchor=south east] at (axis cs:0.99,1.5e-7) {unstable, $a<1$};
+            \node[font=\footnotesize, gray!70!black, anchor=south west] at (axis cs:1.01,1.5e-7) {stable, $a>1$};
+            \addplot[RoyalBlue, thick, mark=*, mark size=2pt, unbounded coords=jump,
+                     x filter/.expression={abs(x-1)<0.001 ? nan : x}]
+                table[x=a, y=P_err_pct, col sep=comma] {graph_data/figE_period_error.csv};
+            \addlegendentry{measured period error}
+            \addplot[only marks, mark=o, mark size=2.4pt, RoyalBlue] coordinates {(1.00,4.16959e-7)};
+            \addlegendentry{$a=1$ (no growth (near noise)}
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Period error of the linear prediction across the bifurcation, $\eta_0=10^{-4}$. Errors on the unstable side ($a<1$) are up to about 4000 times larger than at the same distance on the stable side.}
+    \label{fig:period-error}
+\end{figure}
+
+    \subsection{Scaling}\label{subsec:scaling}
+
+    The linearization in Section~\ref{sec:linearizing} retained the term $\left(1-a^2\right)\eta$. It discarded the $-a\eta^2-\frac{1}{3}\eta^3$ terms. Thus, the relative size of the discarded terms is
+    \[
+        \frac{-a\eta^2-\frac{1}{3}\eta^3}{\left(1-a^2\right)\eta}\approx\frac{a}{1-a^2}\eta
+    \]
+    for small $\eta$, which scales linearly with $\eta$. Therefore, the relative error of the linear solution should scale as $\eta_0^1$. Placing $\log_{10}$(relative deviation) against $\log_{10}\eta_0$ over the range $10^{-5}\leq\eta_0\leq10^{-2}$ and then taking the best fit of that line results in a gradient of 1.005, with all the points lying within 1.8\% of the line of best fit. The predicted exponent of 1 is now confirmed within 0.5\%.
+
+    \begin{table}[H]
+        \centering
+        \begin{tabular}{ccc}
+            \toprule
+            \textbf{$\eta_0$} & \textbf{relative deviation} & \textbf{deviation / $\eta_0$} \\
+            \midrule
+            $10^{-5}$ & $4.345\times10^{-5}$ & 4.345 \\
+            $10^{-4}$ & $4.347\times10^{-4}$ & 4.347 \\
+            $10^{-3}$ & $4.365\times10^{-3}$ & 4.365 \\
+            $10^{-2}$ & $4.545\times10^{-2}$ & 4.545 \\
+            \bottomrule
+        \end{tabular}
+        \caption{Relative Deviation of the Linearized Model Scaling with $\eta_0$}
+        \label{tab:scaling}
+    \end{table}
+    
+    \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            width=0.8\textwidth, height=7cm,
+            xmode=log, ymode=log,
+            xlabel={starting displacement $\eta_0$},
+            ylabel={relative deviation},
+            xmin=6e-6, xmax=1.6e-2, ymin=2.5e-5, ymax=8e-2,
+            axis lines=left, tick align=outside,
+            legend pos=north west, legend cell align=left,
+            legend style={font=\footnotesize, draw=none},
+        ]
+            \addplot[black, thick, domain=8e-6:1.3e-2, samples=2] {10^(0.6601)*x^(1.0051)};
+            \addlegendentry{line of best fit, gradient $1.005$}
+            \addplot[orange, very thick, dash pattern=on 4pt off 3pt, domain=8e-6:1.3e-2, samples=2] {4.3454e-5*(x/1e-5)};
+            \addlegendentry{predicted gradient $1$}
+            \addplot[only marks, mark=*, mark size=2.2pt, RoyalBlue] table[x=eta0, y=rel_dev, col sep=comma] {graph_data/figB_scaling.csv};
+            \addlegendentry{measured (RK4)}
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Relative deviation against starting displacement on Logarithmic Axes, $a=0.85$. The measured gradient (1.005) matches the gradient of 1 predicted from the discarded terms; the point at $\eta_0=10^{-2}$ lies slightly above the line.}
+    \label{fig:scaling}
+\end{figure}
+
+
+    Although the linearized model is highly accurate in this regard, it fails in a different category. The same process from earlier also predicts the coefficient $\frac{a}{1-a^2}=3.06$. The actual coefficient is 4.35. The model underestimated by 42\%. This discrepancy is not surprising, though. The argument compares the term sizes in an instant, and the observed deviation accumulates over the entire period.
+
+    Above, when $\eta_0\approx 10^{-2}$, the measured data deviates positively from the best-fit line. It was assumed that the cubic term was negligible besides the quadratic term, but as $\eta$ grows, the significance of that cubic term grows with it.
+
+    \subsection{Area of Validity}\label{subsec:area-of-validity}
+
+    To answer the research question, we must determine what constitutes a failure condition for the model's accuracy. We will present three potential definitions.
+
+    \begin{table}[H]
+        \centering
+        \begin{tabular}{lcc}
+            \toprule
+            \textbf{definition of failure} & \textbf{5\% radius} & \textbf{10\% radius} \\
+            \midrule
+            deviation at the \textbf{end} of one period   & $0.0244$            & $0.0458$            \\
+            \textbf{maximum} deviation during one period  & $0.0110$            & $\mathbf{0.0209}$   \\
+            \textbf{maximum} deviation over three periods & $3.38\times10^{-5}$ & $6.75\times10^{-5}$ \\
+            \bottomrule
+        \end{tabular}
+        \caption{Comparison of Candidate Failure Definitions and Their Corresponding Displacement Radii}
+        \label{tab:failure-definitions}
+    \end{table}
+
+    For this specific research question, the second definition is the most effective. The first definition minimizes error by using a single sampling instant, which may miss the largest gap, and the third requires accuracy beyond what the linearization describes. The maximum deviation over one predicted period is stricter than the first definition and matches the theory being tested.
+
+
+    \subsection{Comparison with Literature}\label{subsec:comparison-with-literature}
+	None of the equations derived are new. \cite{kallenFreeOscillations1979} introduced self-sustained oscillations in a temperature-ice system in 1979. The linearized outgoing radiation term is even older, dating to \cite{budykoEffectSolar1969} (1969), and the $\tanh$ albedo comes from \cite{dortmansEnergyBalance2019}. This paper's primary contribution is testing the linearization. This was not previously numerically quantified in the papers reviewed.
+	
+	In the literature reviewed for this paper, the primary use of the linearization technique is to classify equilibria. \cite{plociniczakHopfBifurcation2019} uses the Jacobian only to determine stability and states that his model is valid only if ``the excursions from the equilibrium should not be large'' \parencite[19]{plociniczakHopfBifurcation2019}, but it does not specify to what extent. In the existing corpus, the closest equivalent is found in \cite{lohmannTemperaturesEnergy2020} \textcite{lohmannTemperaturesEnergy2020}, where the range of the linear radiation term $A+BT$ is tested; here, it is found that the linearization is acceptable for roughly -50 to $30\circ$ C, but the deviation over a full range of possible planet temperatures is specified by eye in the paper, without giving an exact accuracy. Surveyed studies utilize the linearized solution of the coupled system as a qualitative predictor of system behaviour in addition to quantifying where the model fails. The research presented here thus presents \cite{plociniczakHopfBifurcation2019}'s qualitative observation to be that $\eta_0\approx0.02$ for 10\% accuracy over one period. Again, this claim is limited to the papers reviewed.
+	

@@ -1,0 +1,48 @@
+\begin{tikzpicture}
+\begin{axis}[
+    xlabel={X AXIS LABEL (UNIT)},
+    ylabel={Y AXIS LABEL (UNIT)},
+    title={Y vs. X of DATA},
+    grid=major,
+    legend pos=north east,
+    width=13cm,
+    height=8.666cm,
+    xmin=0, xmax=8.5,
+    ymin=8, ymax=15,
+    axis lines=left,
+    tick align=outside
+]
+
+% Plot data points with error bars
+\addplot[
+    color=Maroon1,
+    mark=*,
+    thick,
+    error bars/.cd,
+        y dir=both,
+        y explicit,
+        error bar style={color=black}
+] 
+table[
+    x=Event, 
+    y=Average, 
+    y error=Uncertainty,
+    col sep=comma
+] {graphData/sampleData.csv};
+
+
+\addplot[
+    color=Maroon4,
+    domain=0:12.5,
+    samples=200    
+]
+{ -2.10938 * tanh(1.01112 * (x - 3.97174)) + 11.18673 };
+
+% Add legend
+\legend{
+    Collected Data,
+    REGRESSION $R^2$: 0,
+}
+
+\end{axis}
+\end{tikzpicture}
