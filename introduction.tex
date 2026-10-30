@@ -25,4 +25,34 @@
     \[
         C\frac{du}{dt} = \left[Q-\frac{Q}{2}\left(\alpha_W+\alpha_C\right)-A-BT_R\right] + \left[-\frac{Q\left(\alpha_W-\alpha_C\right)}{2\omega}-B\right]u+\frac{Q\left(\alpha_W-\alpha_C\right)}{6\omega^3}u^3+O\left(\frac{u^5}{\omega^5}\right)
     \]
+    
+    \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            width=0.8\textwidth, height=7cm,
+            ymode=log,
+            xlabel={control parameter $a$},
+            ylabel={period error (\%)},
+            xmin=0.78, xmax=1.22, ymin=1e-7, ymax=1,
+            xtick={0.80,0.85,...,1.20},
+            xticklabel style={/pgf/number format/fixed, /pgf/number format/precision=2, /pgf/number format/fixed zerofill},
+            axis lines=left, tick align=outside,
+            legend pos=north east, legend cell align=left,
+            legend style={font=\footnotesize, draw=none},
+        ]
+            \addplot[gray, dashed, forget plot] coordinates {(1,1e-7) (1,1)};
+            \node[font=\footnotesize, gray!70!black, anchor=south east] at (axis cs:0.99,1.5e-7) {unstable, $a<1$};
+            \node[font=\footnotesize, gray!70!black, anchor=south west] at (axis cs:1.01,1.5e-7) {stable, $a>1$};
+            \addplot[RoyalBlue, thick, mark=*, mark size=2pt, unbounded coords=jump,
+                     x filter/.expression={abs(x-1)<0.001 ? nan : x}]
+                table[x=a, y=P_err_pct, col sep=comma] {graph_data/figE_period_error.csv};
+            \addlegendentry{measured period error}
+            \addplot[only marks, mark=o, mark size=2.4pt, RoyalBlue] coordinates {(1.00,4.16959e-7)};
+            \addlegendentry{$a=1$ (no growth (near noise)}
+        \end{axis}
+    \end{tikzpicture}
+    \label{fig:period-error}
+\end{figure}
+
 
