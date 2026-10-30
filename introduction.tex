@@ -1,1 +1,28 @@
 \section{Introduction}
+
+ Substituting back into $\alpha(T)$ gives:
+
+    \[
+        \alpha(T)=\frac{1}{2}\left[\left(\alpha_W+\alpha_C\right)+\left(\alpha_W-\alpha_C\right)\left(\frac{u}{\omega}-\frac{u^3}{3\omega^3}+O\left(\frac{u^5}{\omega^5}\right)\right)\right].
+    \]
+
+    Then, substituting this into the energy conservation model and substituting $T=T_R+u$:
+
+    \[
+        C\frac{dT}{dt} = Q\left[1-\frac{1}{2}\left[\left(\alpha_W+\alpha_C\right)+\left(\alpha_W-\alpha_C\right)\left(\frac{u}{\omega}-\frac{u^3}{3\omega^3}+O\left(\frac{u^5}{\omega^5}\right)\right)\right] \right]-(A+B\left(T_R+u\right)).
+    \]
+
+    Then distributing $Q$:
+
+    \[
+        C\frac{dT}{dt} = \left[Q+\left[-\frac{Q}{2}\left(\alpha_W+\alpha_C\right)-\frac{Q}{2}\left(\alpha_W-\alpha_C\right)\left(\frac{u}{\omega}-\frac{u^3}{3\omega^3}+O\left(\frac{u^5}{\omega^5}\right)\right)\right] \right]-(A+B\left(T_R+u\right)).
+    \]
+
+    \[
+        C\frac{dT}{dt} = Q-\frac{Q}{2}\left(\alpha_W+\alpha_C\right) -\frac{Q\left(\alpha_W-\alpha_C\right)}{2\omega}u+\frac{Q\left(\alpha_W-\alpha_C\right)}{6\omega^3}u^3+O\left(\frac{u^5}{\omega^5}\right)-A-B\left(T_R+u\right)
+    \]
+
+    \[
+        C\frac{du}{dt} = \left[Q-\frac{Q}{2}\left(\alpha_W+\alpha_C\right)-A-BT_R\right] + \left[-\frac{Q\left(\alpha_W-\alpha_C\right)}{2\omega}-B\right]u+\frac{Q\left(\alpha_W-\alpha_C\right)}{6\omega^3}u^3+O\left(\frac{u^5}{\omega^5}\right)
+    \]
+
