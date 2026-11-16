@@ -58,6 +58,11 @@
 \let\oldsubsection\subsection
 \let\oldsubsubsection\subsubsection
 
+\makeatletter
+\renewcommand{\fps@figure}{!htbp}
+\renewcommand{\fps@table}{!htbp}
+\makeatother
+
 \RenewDocumentCommand{\section}{s o m}{%
   \FloatBarrier
   \IfBooleanTF{#1}{\oldsection*{#3}}{\IfValueTF{#2}{\oldsection[#2]{#3}}{\oldsection{#3}}}%
