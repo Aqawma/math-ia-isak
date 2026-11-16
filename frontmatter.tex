@@ -5,6 +5,7 @@
 \usepackage{graphicx}
 \usepackage{amsmath, amssymb}
 \usepackage{float}
+\usepackage{placeins} % provides \FloatBarrier
 \usepackage{caption}
 \usepackage{setspace}
 \usepackage{fancyhdr}
@@ -46,6 +47,30 @@
 \pgfplotsset{compat=1.18}
 \usepackage[backend=biber,style=mla]{biblatex}
 \usepackage{amssymb}
-\addbibresource{Math IA ISAK.bib}  
+\addbibresource{Math IA ISAK.bib}
 
 \graphicspath{{images/}}
+
+% Float containment: no float crosses a heading, and none sits above one.
+% Keep this block after all packages so it wraps the final \section definitions.
+\makeatletter
+\let\oldsection\section
+\let\oldsubsection\subsection
+\let\oldsubsubsection\subsubsection
+
+\RenewDocumentCommand{\section}{s o m}{%
+  \FloatBarrier
+  \IfBooleanTF{#1}{\oldsection*{#3}}{\IfValueTF{#2}{\oldsection[#2]{#3}}{\oldsection{#3}}}%
+  \suppressfloats[t]%
+}
+\RenewDocumentCommand{\subsection}{s o m}{%
+  \FloatBarrier
+  \IfBooleanTF{#1}{\oldsubsection*{#3}}{\IfValueTF{#2}{\oldsubsection[#2]{#3}}{\oldsubsection{#3}}}%
+  \suppressfloats[t]%
+}
+\RenewDocumentCommand{\subsubsection}{s o m}{%
+  \FloatBarrier
+  \IfBooleanTF{#1}{\oldsubsubsection*{#3}}{\IfValueTF{#2}{\oldsubsubsection[#2]{#3}}{\oldsubsubsection{#3}}}%
+  \suppressfloats[t]%
+}
+\makeatother
