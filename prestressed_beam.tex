@@ -15,7 +15,19 @@ This means the load on the hay is proportional to the curvature. On a flat face,
 
 \subsection{Momemnt of Decompression}
 \subsubsection{Second Moment of Area}
-When a section bends, the warping remains in the plane. For example, a piece of hay at a height $y$ above the neutral axis is stretched only in proportion to $y$, as that is the direction of the bend. Thus, the stress is also proportional to $y$. We can model this stress as a lever arm $y$, so its contribution to the moment carries a second factor of $y$. For
+When a section bends, the warping remains in the plane. For example, a piece of hay at a height $y$ above the neutral axis is stretched only in proportion to $y$, as that is the direction of the bend. Thus, the stress is also proportional to $y$. We can model this stress as a lever arm $y$, so its contribution to the moment carries a second factor of $y$. This leads to the formula:
+\[
+I=\int y^2dA
+\]
+Where...
+\begin{itemize}
+	\item $I$ is the second moment of area about the neutral axis ($\text{m}^4$).
+	\item $y$ is the perpendicular distance from the neutral axis to the area element (m).
+	\item $dA$ is an element of cross-sectional area ($\text{m}^2$)
+	\item The integral is taken over the entire cross section.
+\end{itemize}
+
+
 
 \subsection{Extent of Bale Sag}
 
