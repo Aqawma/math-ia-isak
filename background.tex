@@ -19,41 +19,42 @@ For this investigation, the one that matters most is the tension in a finished b
             Symbol & Meaning & Units \\
             \midrule
             $T$ & tension in one twine & N \\
-            $T_{\text{tot}}$ & total twine force on a setion, will be $2T$ for a bale with two strings & N \\
-            $\ell,w,h$ & bale length, witdth, and height & m \\
+            $T_{\text{tot}}$ & total twine force crossing a transverse section, equal to $4T$ for a bale with two strings & N \\
+            $\ell,w,h$ & bale length, width, and height & m \\
             $\ell_A,\ell_B$ & lengths of the two sides of a bowed bale & m \\
-            $W,L$ & wagon bed inside witdth and length & m \\
+            $W,L$ & wagon bed inside width and length & m \\
             $W_b$ & bale weight & N \\
             $\rho$ & bale density & $\text{kg}\, \text{m}^{-3}$ \\ 
             $A$ & bale cross-sectional area & $\text{m}^2$ \\ 
             $I$ & second moment of area & $\text{m}^4$ \\
             $Z$ & modulus of section, $\frac{I}{c}$ & $\text{m}^3$ \\
-            $E\, I$ & flexural rigidity & $\text{N}\, \text{m}^{2}$ \\
             $M_\text{crit}$ & decompression moment & $\text{N}\, \text{m}$ \\
             $M_\text{self}$ & moment from the bale's own weight when bridging & $\text{N}\, \text{m}$ \\
-            $q$ & distributed load from bales above, per unit length & $\text{N}\, \text{m}^{-1}$ \\
-            $\delta$ & sag of a bale bridging a gap & m \\
-            $d$ & span a bale bridges & m \\
             $s$ & bow sagitta & m \\
-            $c$ & chord of a bowed bale & m \\
             $R,\theta$ & radius and subtended angle of the bowed centerline & m, rad \\
             $\kappa$ & curvature of the bale centerline, $\frac{1}{R}$ & $\text{m}^{-1}$ \\
             $\epsilon$ & longitudinal expansion after ejection & - \\
             $f$ & side-to-side asymmetry of that expansion & - \\
             $\varphi$ & packing fraction & - \\
-            $\Pi_1$ & ratio of decompression to self-weight moment & - \\
-            $\lambda$ & geometric scale factor of the model & - \\
+            $\sigma_0$ & prestress: the uniform compressive stress the twine maintains & $\text{N}\, \text{m}^{-2}$ \\
+            $Z/A$ & section modulus over area; equals $h/6$ for a bale lying flat & m \\
+            $N$ & number of bales across a row, $\lfloor W/w \rfloor$ & - \\
+            $k$ & a particular value of $N$; also the summation index in Section 4.4 & - \\
+            $X$ & width of a randomly chosen bale, treated as normally distributed & m \\
+            $\mu,\sigma$ & mean and standard deviation of $X$ & m \\
             $\Phi$ & standard normal cumulative distribution function & - \\
             \bottomrule
             
         \end{tabular}
-        \caption{Maximum Deviation of the Linearized Model as a Percentage of the Starting Displacement $\eta_0$} %TODO fix definition caption
-        \label{tab:starting-displacement}
+        \caption{Symbols used in this investigation.}
+        \label{tab:symbols}
     \end{table}
-    
+
+Two symbols carry two meanings. The symbol $\sigma$ denotes stress in Section 3 and the standard deviation of bale width in Section 4; the two never appear in the same equation. The curvature $\kappa$ and the row count $k$ are visually similar and are never used together.
+
 \subsection{Definition of Packing Efficiency}
 As with tension, there are three possible definitions of packing efficiency. They are as follows:
 \[
-n=\text{bales per load},\quad \phi=\frac{\overline{V}_{\text{bale}}}{V_{\text{wagon}}},\quad M = \text{total hay mass per load.}
+n=\text{bales per load},\quad \varphi=\frac{\overline{V}_{\text{bale}}}{V_{\text{wagon}}},\quad M = \text{total hay mass per load.}
 \]
 %TODO justify the use cases for all three

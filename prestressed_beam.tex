@@ -15,9 +15,10 @@ Where...
 
 This means the load on the hay is proportional to the curvature. On a flat face, $\kappa=0$, so the twine exerts no force. By imagining a similar shape, like a rubber band, we can intuitively see why this is true. All the load is delivered at the corners of the bale, so it acts like a tendon anchored at the corners. This is why the twine only cuts into the bale at the corners.
 
-\subsection{Momemnt of Decompression}
+\subsection{Moment of Decompression}
 \subsubsection{Second Moment of Area}
 When a section bends, the warping remains in the plane. For example, a piece of hay at a height $y$ above the neutral axis is stretched only in proportion to $y$, as that is the direction of the bend. Thus, the stress is also proportional to $y$. We can model this stress as a lever arm $y$, so its contribution to the moment carries a second factor of $y$. This leads to the formulae:
+%TODO one sentence defining the neutral axis: the axis along which the bending stress is zero, passing through the centroid for a uniform symmetric section, so that $y$ runs from $-h/2$ at the bottom face to $+h/2$ at the top.
 \[
 \sigma=\frac{My}{I}
 \]
@@ -25,7 +26,7 @@ Where...
 \begin{itemize}
 	\item $\sigma$ is the direct stress at a point in the cross section, taken with positive tension ($\text{Nm}^{-2}$).
 	\item $M$ is the bending moment carried by that cross section (Nm).
-	\item $y$ is the perpendicular distance from the neutral axis to the area element (m).
+	\item $y$ is the perpendicular distance from the neutral axis to the point at which the stress is evaluated (m).
 	\item $I$ is the second moment of area about the neutral axis ($\text{m}^4$).
 \end{itemize}
 \[
@@ -45,8 +46,18 @@ With these, for a rectangle of width $w$ and height $h$ bending about the horizo
 I=\int_{-\frac{h}{2}}^{\frac{h}{2}}y^2wdy=w\left[\frac{y^3}{3}\right]^{\frac{h}{2}}_{-\frac{h}{2}}=\frac{wh^3}{12}
 \]
 
-\subsection{Extent of Bale Sag}
+%TODO one sentence: the stress grows linearly with $y$, so it is largest at the surface, where $|y|=h/2$.
+\[
+\sigma_{\max}=\frac{M(h/2)}{I}=\frac{M}{I/(h/2)}=\frac{M}{Z}, \qquad Z=\frac{I}{h/2}=\frac{wh^3}{12}\cdot\frac{2}{h}=\frac{wh^2}{6}
+\]
+Where...
+\begin{itemize}
+	\item $Z$ is the section modulus, the second moment of area divided by the distance from the neutral axis to the outermost fibre ($\text{m}^3$).
+	\item $\sigma_{\max}$ is the bending stress at the top and bottom faces ($\text{Nm}^{-2}$).
+\end{itemize}
+%TODO one sentence: record the combination the threshold needs, and note that it has units of length.
+\[
+\frac{Z}{A}=\frac{wh^2/6}{wh}=\frac{h}{6}=0.0593\text{ m}
+\]
 
 \subsection{Threshold}
-
-\subsection{Dimensionless Form}

@@ -1,4 +1,4 @@
-\section{Discrete Capactity \& the Floor Function}
+\section{Discrete Capacity \& the Floor Function}
 \subsection{The Floor Function}
 For a fixed wagon width, $W$, the number of bales of width $w$ that can fit can be described by the function
 \[
@@ -15,22 +15,32 @@ There will be a jump at $w=\frac{W}{k}$ for every positive integer $k$, and betw
 
 The derivative of this function exists almost everywhere and is always zero; therefore, there are no stationary points, so standard optimization techniques cannot be applied.
 
-\subsubsection{Two Thresholds}
-A bow of sagitta $s$ increases the space a bale occupies to $w+s$. For a wagon bed 2.44 m wide, the row capacity drops from five bales to four when $w+s$ passes $\frac{W}{5} +0.488$m. For a nominal bale, this gives
+\subsection{Where the Bow Comes From}
+%TODO the mechanism in words: the two loops sit at different positions across the width, so if one side is restrained more than the other the two sides spring back by different amounts and the bale must curve. Nothing pushes it sideways.
+\[
+\kappa=\frac{1}{R}=\frac{\theta}{\overline{\ell}}=\frac{\Delta L}{w\overline{\ell}}\approx\frac{f\overline{\epsilon}}{w}
+\]
+\[
+s=\frac{f\overline{\epsilon}\ell^2}{8w}
+\]
+%TODO one sentence: no material property, no force and no twine tension appears here, only geometry and the two expansion fractions.
+
+\subsection{Two Thresholds}
+A bow of sagitta $s$ increases the space a bale occupies to $w+s$. For a wagon bed 2.44 m wide, the row capacity drops from five bales to four when $w+s$ passes $\frac{W}{5}=0.488$ m. For a nominal bale, this gives
 \[
 s_{\text{crit}}=0.488-0.457=0.031\text{m}
 \]
-A 31 mm bow in a bale reduces the packing efficiency by 13\%.
+A 31 mm bow in a bale reduces the packing fraction by about 13 percentage points.
 
 \subsection{Smoothing the Step with an Expectation}
 
 \[
-\mathbb{E}\left[\left\lfloor\frac{W}{W_b}\right\rfloor\right]=\sum_{k=1}^{\infty}k\mathbb{P}\left(\frac{W}{k+1}<W_b\leq\frac{W}{k}\right)
+\mathbb{E}\left[\left\lfloor\frac{W}{X}\right\rfloor\right]=\sum_{k=1}^{\infty}k\mathbb{P}\left(\frac{W}{k+1}<X\leq\frac{W}{k}\right)
 \]
 \[
-\left[\left\lfloor\frac{W}{W_b}\right\rfloor\right]=\sum_{k=1}^{\infty}k\left[\Phi\left(\frac{W/k-\mu}{\sigma}\right)-\Phi\left(\frac{W/(k+1)-\mu}{\sigma}\right)\right]
+\mathbb{E}\left[\left\lfloor\frac{W}{X}\right\rfloor\right]=\sum_{k=1}^{\infty}k\left[\Phi\left(\frac{W/k-\mu}{\sigma}\right)-\Phi\left(\frac{W/(k+1)-\mu}{\sigma}\right)\right]
 \]
 
 \[
-\frac{d}{d\mu}\mathbb{E}\left[\left\lfloor\frac{W}{W_b}\right\rfloor\right]=\frac{1}{\sigma}\sum_{k=1}^{\infty}k\left[\phi\left(\frac{W/(k+1)-\mu}{\sigma}\right)-\phi\left(\frac{W/k-\mu}{\sigma}\right)\right]
+\frac{d}{d\mu}\mathbb{E}\left[\left\lfloor\frac{W}{X}\right\rfloor\right]=\frac{1}{\sigma}\sum_{k=1}^{\infty}k\left[\Phi'\left(\frac{W/(k+1)-\mu}{\sigma}\right)-\Phi'\left(\frac{W/k-\mu}{\sigma}\right)\right]
 \]
