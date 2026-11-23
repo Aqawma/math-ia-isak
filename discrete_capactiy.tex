@@ -5,4 +5,19 @@ For a fixed wagon width, $W$, the number of bales of width $w$ that can fit can 
 N(w)=\left\lfloor\frac{W}{w}\right\rfloor
 \]
 
+\[
+\lim_{w\rightarrow(W/k)^-}N(w)=k, \qquad \lim_{w\rightarrow(W/k)^+}N(w)=k-1
+\]
+
 \subsection{Smoothing the Step with an Expectation}
+
+\[
+\mathbb{E}\left[\left\lfloor\frac{W}{W_b}\right\rfloor\right]=\sum_{k=1}^{\infty}k\mathbb{P}\left(\frac{W}{k+1}<W_b\leq\frac{W}{k}\right)
+\]
+\[
+\left[\left\lfloor\frac{W}{W_b}\right\rfloor\right]=\sum_{k=1}^{\infty}k\left[\Phi\left(\frac{W/k-\mu}{\sigma}\right)-\Phi\left(\frac{W/(k+1)-\mu}{\sigma}\right)\right]
+\]
+
+\[
+\frac{d}{d\mu}\mathbb{E}\left[\left\lfloor\frac{W}{W_b}\right\rfloor\right]=\frac{1}{\sigma}\sum_{k=1}^{\infty}k\left[\phi\left(\frac{W/(k+1)-\mu}{\sigma}\right)-\phi\left(\frac{W/k-\mu}{\sigma}\right)\right]
+\]
